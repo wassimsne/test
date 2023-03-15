@@ -29,7 +29,7 @@ public class SignalRService
          await   ListenForChanges();
 
         }
-        public async Task SendMessage(int id,Machine.Etat etat)
+        public async Task SendMessage(int id,Machine.EtatMachine etat)
         {
             if (HubConnection.State == HubConnectionState.Connected)
             {
@@ -47,7 +47,7 @@ public class SignalRService
                 
                     HubConnection.On<Machine>("MachineAdded", async (data) =>
                     {
-                        Console.WriteLine("Nouveau etat machine recu: machine numero  "+data.IdMachine +" "+data.etat);
+                        Console.WriteLine("Nouveau etat machine recu: machine numero  "+data.IdMachine +" "+data.etatMachine);
                      
                     });
                 }

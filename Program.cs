@@ -30,9 +30,9 @@ using static TestLaverie.Machine;
         */
         Machine[] machines = new Machine[]
       {
-            new Machine{IdMachine = 23,Laverie = lav,DureeToalDeFonctionnement = 9,etatMachine = Machine.EtatMachine.horsService,NumeroCode = 1},
-            new Machine {IdMachine = 24,Laverie = lav,DureeToalDeFonctionnement = 9,etatMachine = Machine.EtatMachine.horsService,NumeroCode = 2 },
-            new Machine {IdMachine = 25,Laverie = lav,DureeToalDeFonctionnement = 9,etatMachine = Machine.EtatMachine.horsService,NumeroCode = 3 }
+            new Machine{IdMachine = 23,Laverie = lav,DureeToalDeFonctionnement = 9,etat = Machine.Etat.horsService,NumeroCode = 1},
+            new Machine {IdMachine = 24,Laverie = lav,DureeToalDeFonctionnement = 9,etat = Machine.Etat.horsService,NumeroCode = 2 },
+            new Machine {IdMachine = 25,Laverie = lav,DureeToalDeFonctionnement = 9,etat = Machine.Etat.horsService,NumeroCode = 3 }
       };
         for (int e = 0; e < machines.Length; e++)
         {
@@ -42,7 +42,7 @@ using static TestLaverie.Machine;
 
         SignalRService signalRClient = new(baseUrl + "datahub");
         Task task = signalRClient.Initialize();
-        signalRClient.HubConnection.On<Machine>("MachineAdded", (machi) =>
+        signalRClient.HubConnection.On<Machine>("MachineAdded", async (machi) =>
         {
 
             MachineAddedEvent(machi, machines);
@@ -76,11 +76,11 @@ using static TestLaverie.Machine;
                         var x = machines.FirstOrDefault(u => u.IdMachine.Equals(Convert.ToInt32(idmachine)));
                         if (x is not null)
                         {
-                            x.etatMachine = EtatMachine.enMarche;
+                            x.etat = Etat.enMarche;
                         }
 
                         PutRequest(idmachine, x);
-                        signalRClient.SendMessage(Convert.ToInt32(idmachine), EtatMachine.enMarche);
+                        signalRClient.SendMessage(Convert.ToInt32(idmachine), Etat.enMarche);
 
                     }
                     break;
@@ -90,11 +90,11 @@ using static TestLaverie.Machine;
                     var a = machines.FirstOrDefault(u => u.IdMachine.Equals(Convert.ToInt32(idmachin)));
                     if (a is not null)
                     {
-                        a.etatMachine = EtatMachine.arret;
+                        a.etat = Etat.arret;
                     }
 
                     PutRequest(idmachin, a);
-                    signalRClient.SendMessage(Convert.ToInt32(idmachin), EtatMachine.arret);
+                    signalRClient.SendMessage(Convert.ToInt32(idmachin), Etat.arret);
                     /* //signalRClient.SendMessage(idmachine, false);                       
                      var client = new RestClient(baseUrl + "api/machine/" + idmachin);
                      var request = new RestRequest(Method.PUT);
@@ -114,11 +114,11 @@ using static TestLaverie.Machine;
 
                         if (machine is not null)
                         {
-                            machine.etatMachine = EtatMachine.enMarche;
+                            machine.etat = Etat.enMarche;
                         }
 
                         PutRequest(machine.IdMachine, machine);
-                        signalRClient.SendMessage(machine.IdMachine, EtatMachine.enMarche);
+                        signalRClient.SendMessage(machine.IdMachine, Etat.enMarche);
                     }
                     break;
                 case "d":
@@ -129,10 +129,10 @@ using static TestLaverie.Machine;
 
                         if (machine is not null)
                         {
-                            machine.etatMachine = EtatMachine.arret;
+                            machine.etat = Etat.arret;
                         }
                         PutRequest(machine.IdMachine, machine);
-                        signalRClient.SendMessage(machine.IdMachine, EtatMachine.arret);
+                        signalRClient.SendMessage(machine.IdMachine, Etat.arret);
                         /* var cl = new RestClient(baseUrl + "api/machine/" + machine.IdMachine);
                          var req = new RestRequest(Method.PUT);
                          req.AddJsonBody(machine);

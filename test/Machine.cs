@@ -14,16 +14,16 @@ namespace TestLaverie
 
       
             public Laverie Laverie { get; set; }
-            public enum Etat { enMarche, arret, horsService };
+            public enum EtatMachine { enMarche, arret, horsService };
          
-            public Etat etat { get; set; }
+            public EtatMachine etatMachine { get; set; }
             public int DureeToalDeFonctionnement { get; set; }
             public int NumeroCode { get; set; }
 
-        public Machine(Etat et)
+        public Machine(EtatMachine et)
             
         {
-            this.etat = et;
+            this.etatMachine = et;
 
         }
         public Machine()
@@ -34,7 +34,7 @@ namespace TestLaverie
         }
         public override string ToString()
         {
-            return "Machine Numero " + IdMachine + " etat= " + etat;
+            return "Machine Numero " + IdMachine + " etat= " + etatMachine;
         }
     }
   
